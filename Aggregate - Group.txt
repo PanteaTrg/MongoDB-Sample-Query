@@ -1,0 +1,75 @@
+db.[collection].aggregate([
+  {
+    $match: {
+      Date: { $gte:1761165000000 , $lt:1763757000000  },
+      state: { $in: ['CONF', 'DEL'] },
+      'fund.code': 1 
+    }
+  },
+  {
+    $group: {
+      _id: null,  
+      totalAmount: { $sum: "$amount" },
+      totalpayment: { $sum: "$prepayment.cashPayAmount" }
+    }
+  }
+])
+
+-----------------------
+db.[collection].aggregate([
+  {
+    $match: {
+      Date: { $gte:1761165000000 , $lt:1763757000000  },
+      state: { $in: ['CONF', 'DEL'] },
+      'fundProvider.code': 7 
+    }
+  },
+  {
+    $group: {
+      _id: null,  
+      totalAmount: { $sum: "$amount" },
+      totalPrepayment: { $sum: "$prepayment.cashPayAmount" },
+      totalCoupon: { $sum: "$couponInfo.couponAmount" }
+    }
+  }
+])
+
+-----------------------
+db.[collection].aggregate([
+  {
+    $match: {
+      Date: { $gte:1761165000000 , $lt:1763757000000  }
+    }
+  },
+  {
+    $group: {
+      _id: null,  
+      totalAmount: { $sum: "$amount" },
+      totalPrepayment: { $sum: "$prepayment.cashPayAmount" },
+      totalCoupon: { $sum: "$couponInfo.couponAmount" }
+    }
+  }
+])
+
+
+-----------------------
+db.[collection].aggregate([
+    {
+        $match: {
+            Date: {
+                $gte: 1758573000000
+            },
+            couponInfo: {
+                $exists: true
+            }
+        }
+    },
+    {
+        $group: {
+            _id: null,
+            minDate: {
+                $min: "$Date"
+            }
+        }
+    }
+]);
