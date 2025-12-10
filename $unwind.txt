@@ -1,0 +1,44 @@
+
+db.[collection].aggregate([{
+    $match: {
+        'steps.code':'ACTIVE_STATUS',
+	DDATE:{$gte:1742934600000, $lt:1743021000000}
+    },
+    
+}, {
+    $unwind: '$steps'
+}
+, {
+    $project: {
+        'DDATE':1,
+	'cellNumber': 1,
+        'userId': 1,
+        'steps_code': '$steps.code'
+    }
+}])
+-----------------------------------------
+
+db.[collection].aggregate([{
+    $match: {
+        'steps.code': 'WALLET_ACTIVATION',
+         DDATE: {
+            $gte: 1742934600000,
+            $lt: 1743021000000
+        }
+    },
+    
+}, {
+    $unwind: '$steps'
+}, {
+    $match: {
+        'steps.code': 'WALLET_ACTIVATION'
+    }
+}
+, {
+    $project: {
+        'DDATE': 1,
+        'cellNumber': 1,
+        'userId': 1,
+        'steps_code': '$steps.code'
+    }
+}])
